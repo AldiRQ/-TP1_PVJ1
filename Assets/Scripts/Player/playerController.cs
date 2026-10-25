@@ -15,7 +15,7 @@ public class playerController : MonoBehaviour
     private float verticalVelocity;
     private bool jumPressed;
 
-
+    public Vector3 externalMoveSpeed;
 
     void Start()
     {
@@ -58,7 +58,7 @@ public class playerController : MonoBehaviour
         Vector3 move = -moveDirection.normalized;
         move.y = verticalVelocity / Speed;
 
-        controller.Move(move * Speed * Time.deltaTime);
+        controller.Move(move * Speed * Time.deltaTime + externalMoveSpeed * Time.deltaTime);
     }
 
 
