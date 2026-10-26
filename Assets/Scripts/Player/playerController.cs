@@ -77,6 +77,10 @@ public class playerController : MonoBehaviour
         }
     }
 
+    public void SetSpawnPoint(Transform newSpawnPoint)
+    {
+        spawnPoint = newSpawnPoint;
+    }
     public void Die()
     {
         controller.enabled = false;
