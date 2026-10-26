@@ -12,6 +12,9 @@ public class MovingPlatform : MonoBehaviour
 
     private float proximityThreshold = 0.2f;
 
+    private bool esperandoCambio = false;
+
+
     private void Start()
     {
         pointA.parent = null;
@@ -25,16 +28,33 @@ public class MovingPlatform : MonoBehaviour
     {
         float distanceToTarget = Vector3.Distance(transform.position, currentTarget);
 
-        if (distanceToTarget < proximityThreshold)
-        {
-            currentTarget = currentTarget == pointA.position ? pointB.position : pointA.position;
+        //if (distanceToTarget < proximityThreshold)
+        //{
+        //    currentTarget = currentTarget == pointA.position ? pointB.position : pointA.position;
+        //}
 
+        if (distanceToTarget < proximityThreshold && !esperandoCambio)
+        {
+            esperandoCambio = true;
+            Invoke("CambiarDireccion", 2f);
+            return;
         }
 
         direcction = (currentTarget - transform.position).normalized;
 
-        transform.position += direcction * Speed * Time.deltaTime;
+        //transform.position += direcction * Speed * Time.deltaTime;
+
+        transform.position = Vector3.MoveTowards(transform.position, currentTarget, Speed * Time.deltaTime);
     }
+
+    private void CambiarDireccion()
+    {
+        currentTarget = currentTarget == pointA.position
+            ? pointB.position
+            : pointA.position;
+
+        esperandoCambio = false;
+    } 
 
     private void OnTriggerStay(Collider other)
     {
