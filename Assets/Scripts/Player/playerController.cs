@@ -18,9 +18,19 @@ public class playerController : MonoBehaviour
 
     public Vector3 externalMoveSpeed;
 
+    // Power UP
+    public bool canShoot = false;
+    public GameObject powerEffect;
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
+
+        // Power UP
+        if (powerEffect != null)
+        {
+            powerEffect.SetActive(false);
+        }
     }
 
     void Update()
@@ -87,6 +97,19 @@ public class playerController : MonoBehaviour
         transform.position = spawnPoint.position;
         verticalVelocity = 0f;
         controller.enabled = true;
+    }
+
+    // Power UP
+    public void UnlockShootPower()
+    {
+        canShoot = true;
+
+        if (powerEffect != null)
+        {
+            powerEffect.SetActive(true);
+        }
+
+        Debug.Log("Power UP obtenido!");
     }
 
 }
