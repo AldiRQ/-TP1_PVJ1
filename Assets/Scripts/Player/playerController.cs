@@ -22,6 +22,13 @@ public class playerController : MonoBehaviour
     public bool canShoot = false;
     public GameObject powerEffect;
 
+    // Sistema de Disparo del player
+    public GameObject projectilePrefab;
+    public Transform shootPoint;
+
+    public float fireRate = 0.4f;
+    private float fireTimer;
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -50,10 +57,10 @@ public class playerController : MonoBehaviour
         verticalVelocity += Gravity * Time.deltaTime;
 
         // Direccion del movimiento
-        // Vector3 moveDirection = new Vector3(moveInput.x, 0f, moveInput.y);
+        Vector3 moveDirection = new Vector3(moveInput.x, 0f, moveInput.y);
 
         // Invertimos moveInput (-moveInput.x y -moveInput.y) para corregir el modelo volteado
-        Vector3 moveDirection = new Vector3(-moveInput.x, 0f, -moveInput.y);
+        //Vector3 moveDirection = new Vector3(-moveInput.x, 0f, -moveInput.y);
 
 
         // Rotacion del personaje
@@ -65,11 +72,17 @@ public class playerController : MonoBehaviour
         }
 
         // Movimiento original
-        //Vector3 move = moveDirection.normalized;
-        Vector3 move = -moveDirection.normalized;
+        Vector3 move = moveDirection.normalized;
+        //Vector3 move = -moveDirection.normalized;
         move.y = verticalVelocity / Speed;
 
         controller.Move(move * Speed * Time.deltaTime + externalMoveSpeed * Time.deltaTime);
+
+        // Disparo de Disparo
+        if (fireTimer > 0)
+        {
+            fireTimer -= Time.deltaTime;
+        }
     }
 
 
@@ -111,5 +124,41 @@ public class playerController : MonoBehaviour
 
         Debug.Log("Power UP obtenido!");
     }
+
+    // Sistema de Disparo del player
+    public void OnShoot(InputValue value)
+    {
+        if (!value.isPressed)
+        {
+            return;
+        }
+
+        if (!canShoot)
+        {
+            return;
+        }
+
+        if (fireTimer > 0)
+        {
+            return;
+        }
+
+        fireTimer = fireRate;
+
+        // Instanciar el proyectil
+    }
+
+    public void ShootProjectile()
+    {
+        GameObject projectile = Instantiate(projectilePrefab, shootPoint.position, shootPoint.rotation);
+
+        PlayerProjectile projectileScript = projectile.GetComponent<PlayerProjectile>();
+
+        if (projectileScript != null)
+        {
+            projectileScript.SetDirection(shootPoint.forward);
+        }
+    }
+
 
 }

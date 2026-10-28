@@ -2,15 +2,26 @@ using UnityEngine;
 
 public class PlayerProjectile : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [Header("Movement")]
+    public float Speed = 15f;
+
+    [Header("Lifetime")]
+    public float Lifetime = 5f;
+
+    private Vector3 moveDirection;
+
+    private void Start()
     {
-        
+        Destroy(gameObject, Lifetime);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetDirection(Vector3 direction)
     {
-        
+        moveDirection = direction.normalized;
+    }
+
+    private void Update()
+    {
+        transform.position += moveDirection * Speed * Time.deltaTime;
     }
 }

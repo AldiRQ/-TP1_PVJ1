@@ -11,10 +11,13 @@ public class LevelGoal : MonoBehaviour
             return;
         }
 
-        if (!other.CompareTag("Player")) return;
+        Debug.Log("¡Algo entró en el punto final!: " + other.gameObject.name);
+
+        if (!other.CompareTag("Objeto"))
+        { return; }
         
             levelCompleted = true;
 
-            Debug.Log("¡Nivel Completado!");
+            Debug.Log("VICTORIA!");
     }
 }
